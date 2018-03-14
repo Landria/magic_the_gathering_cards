@@ -2,4 +2,4 @@
 #!/usr/bin/env ruby
 require './lib/cards'
 
-MagicTheGatheringCards::Cards.new.fetch(ARGV.first)
+MagicTheGatheringCards::Cards.fetch(ARGV.first)
