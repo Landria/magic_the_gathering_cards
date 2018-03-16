@@ -22,6 +22,6 @@ RSpec.configure do |config|
   config.color = true
 
   config.after(:each) do
-    File.delete(MagicTheGatheringCards::Settings.cards_local_path) if File.exist?(MagicTheGatheringCards::Settings.cards_local_path)
+   File.delete(MagicTheGatheringCards::Settings.cards_local_path) if File.exist?(MagicTheGatheringCards::Settings.cards_local_path)
   end
 end

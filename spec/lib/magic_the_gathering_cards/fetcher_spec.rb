@@ -1,4 +1,4 @@
-require_relative 'spec_helper'
+require_relative '../../spec_helper'
 
 RSpec.describe MagicTheGatheringCards::Fetcher do
   let(:file) { MagicTheGatheringCards::Settings.cards_local_path }
