@@ -67,4 +67,13 @@ RSpec.describe MagicTheGatheringCards::Cards do
       expect(set.map(&:manaCost).uniq).to eq ['{3}{U}']
     end
   end
+
+  it 'fetches card with 404"' do
+    VCR.use_cassette('cards-404') do
+      set = described_class.fetch
+      expect(set.cards_set).to eq []
+      expect(set.success?).to be_falsey
+      expect(set.errors).to eq ['Remote cards fetching error ocurred']
+    end
+  end
 end

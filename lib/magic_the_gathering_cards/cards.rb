@@ -3,8 +3,7 @@ require 'magic_the_gathering_cards/fetcher'
 
 module MagicTheGatheringCards
   class Cards
-
-    attr_accessor :cards_set, :attributes
+    attr_accessor :cards_set, :attributes, :errors
 
     class << self
       def fetch
@@ -12,9 +11,20 @@ module MagicTheGatheringCards
       end
     end
 
+    def initialize
+      @errors = []
+      @cards_set = []
+      @attributes = []
+    end
+
     def fetch
-      @cards_set = Fetcher.run
-      @attributes = strong_attrs(cards_set.first)
+      begin
+        @cards_set = Fetcher.run
+        @attributes = strong_attrs(cards_set.first)
+      rescue MagicTheGatheringCards::Errors::FetcheError => e
+        @errors << e.message
+      end
+
       self
     end
 
@@ -47,6 +57,10 @@ module MagicTheGatheringCards
 
     def group_by(*attrs)
       cards_set.sort_by { |card| attrs.map { |attr| card.send(attr) } }
+    end
+
+    def success?
+      errors.empty?
     end
 
     private
