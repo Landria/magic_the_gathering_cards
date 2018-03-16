@@ -2,6 +2,6 @@
 
 module MagicTheGatheringCards
   module Errors
-    class FetcherError < StandardError; end
+    class FetcheError < StandardError; end
   end
 end

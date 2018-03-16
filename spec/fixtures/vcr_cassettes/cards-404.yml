@@ -1,0 +1,63 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.magicthegathering.io/v1/cards
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: 'Not Found '
+    headers:
+      Date:
+      - Fri, 16 Mar 2018 13:01:21 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '21'
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d52a8198e4bffda4dc98ff75979aee5b21521205281; expires=Sat, 16-Mar-19
+        13:01:21 GMT; path=/; domain=.magicthegathering.io; HttpOnly; Secure
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 1be865c4-65c1-421e-a462-bcf0fcc70431
+      Ratelimit-Limit:
+      - '1000'
+      Ratelimit-Remaining:
+      - '999'
+      X-Runtime:
+      - '0.007127'
+      Vary:
+      - Origin
+      Via:
+      - 1.1 vegur
+      Expect-Ct:
+      - max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 3fc768710c4990ad-DME
+    body:
+      encoding: UTF-8
+      string: '{"error":"not-found"}'
+    http_version:
+  recorded_at: Fri, 16 Mar 2018 13:01:21 GMT
+recorded_with: VCR 4.0.0
