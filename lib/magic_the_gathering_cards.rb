@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-require 'magic_the_gathering_cards/cards'
+require_relative 'magic_the_gathering_cards/cards'

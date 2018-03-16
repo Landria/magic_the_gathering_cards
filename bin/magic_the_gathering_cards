@@ -1,5 +1,8 @@
-
 #!/usr/bin/env ruby
-require './lib/cards'
+require './lib/magic_the_gathering_cards'
 
-MagicTheGatheringCards::Cards.fetch(ARGV.first)
+attrs = Hash[*ARGV]
+attrs.each { |k, v| attrs[k] = v.chars.first == '[' ? eval(v) : v }
+str = attrs.map { |k, v| v.is_a?(Array) ? "#{k}: #{v}" : "#{k}: '#{v}'" }.join(', ')
+
+puts eval("MagicTheGatheringCards::Cards.fetch.soft_reduce(#{str})")

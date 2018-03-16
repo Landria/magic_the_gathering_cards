@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'magic_the_gathering_cards/fetcher'
+require_relative 'fetcher'
 
 module MagicTheGatheringCards
   class Cards
@@ -37,7 +37,7 @@ module MagicTheGatheringCards
         set.keep_if do |card|
           v = card.send(attr)
           send("#{condition}_condition", v, value)
-        end
+        end 
       end
 
       set
@@ -45,14 +45,6 @@ module MagicTheGatheringCards
 
     def soft_reduce(**attrs)
       reduce(:soft, attrs)
-    end
-
-    def strong_condition(v, value)
-      v.is_a?(Array) ? (v & normalized(value)).count == value.count : v == value
-    end
-
-    def soft_condition(v, value)
-      v.is_a?(Array) ? !(v & normalized(value)).empty? : v =~ regex(value)
     end
 
     def group_by(*attrs)
@@ -65,13 +57,21 @@ module MagicTheGatheringCards
 
     private
 
+    def strong_condition(v, value)
+      v.is_a?(Array) ? (v & normalized(value)).count == value.count : v == value
+    end
+
+    def soft_condition(v, value)
+      v.is_a?(Array) ? !(v & normalized(value)).empty? : v =~ regex(value)
+    end
+
     def normalized(values)
       values.map { |v| v.to_s.capitalize }
     end
 
     def regex(value)
       v = value.gsub('{', '\{').gsub('}', '\}')
-      Regexp.new(v)
+      Regexp.new(v, Regexp::IGNORECASE)
     end
 
     def strong_attrs(card)

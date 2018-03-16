@@ -60,6 +60,14 @@ RSpec.describe MagicTheGatheringCards::Cards do
     end
   end
 
+  it 'fetches case insensitive"' do
+    VCR.use_cassette('cards') do
+      set = described_class.fetch.soft_reduce(type: 'Legendary')
+      set2 = described_class.fetch.soft_reduce(type: 'legendary')
+      expect(set).to eq set2
+    end
+  end
+
   it 'fetches card with only manaCost equals "{3}{U}"' do
     VCR.use_cassette('cards') do
       set = described_class.fetch.reduce(manaCost: '{3}{U}')

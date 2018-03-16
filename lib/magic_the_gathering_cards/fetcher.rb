@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'httparty'
-require 'magic_the_gathering_cards/errors'
-require 'magic_the_gathering_cards/settings'
+require_relative 'errors'
+require_relative 'settings'
 
 module MagicTheGatheringCards
   class Fetcher
