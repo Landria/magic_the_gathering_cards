@@ -29,9 +29,20 @@ OptionParser.new do |parser|
   parser.on('-l', '--legalities FILTERS', String, 'Cards legalities filters') do |filters|
     options[:legalities] = filters
   end
+
+  parser.on('-f', '--fields FILTERS', Array, 'Cards fields filters') do |filters|
+    options[:fields] = filters
+  end
 end.parse!
 
-params = { colors: options[:colors], setName: options[:setName], type: options[:type], legalities: options[:legalities] }.map do |o, v|
+params = Hash[*options[:fields]].merge(
+  colors: options[:colors],
+  setName: options[:setName],
+  type: options[:type],
+  legalities: options[:legalities]
+)
+
+params = params.map do |o, v|
   "#{o}: #{v.inspect}" if v
 end.compact
 
