@@ -41,7 +41,8 @@ module MagicTheGatheringCards
         threads.each(&:join)
       end
 
-      set
+      @cards_set = set
+      self
     end
 
     def soft_reduce(**attrs)
@@ -49,7 +50,8 @@ module MagicTheGatheringCards
     end
 
     def group_by(*attrs)
-      cards_set.sort_by { |card| attrs.map { |attr| card.send(attr) } }
+      cards_set.sort_by! { |card| attrs.map { |attr| card.send(attr) } }
+      self
     end
 
     def success?

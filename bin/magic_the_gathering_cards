@@ -1,8 +1,31 @@
 #!/usr/bin/env ruby
 require './lib/magic_the_gathering_cards'
+require 'pry'
+require 'optparse'
 
-attrs = Hash[*ARGV]
-attrs.each { |k, v| attrs[k] = v.chars.first == '[' ? eval(v) : v }
-str = attrs.map { |k, v| v.is_a?(Array) ? "#{k}: #{v}" : "#{k}: '#{v}'" }.join(', ')
+options = {}
 
-puts eval("MagicTheGatheringCards::Cards.fetch.soft_reduce(#{str})")
+OptionParser.new do |parser|
+  parser.on('-g', '--group GROUPS', Array, 'Cards grouping attrs') do |groups|
+    options[:group_by] = groups
+  end
+
+  parser.on('-c', '--color FILTERS', Array, 'Cards color filters') do |filters|
+    options[:colors] = filters
+  end
+
+  parser.on('-s', '--setName FILTERS', String, 'Cards setName filters') do |filters|
+    options[:setName] = filters
+  end
+
+  parser.on('-t', '--type FILTERS', String, 'Cards type filters') do |filters|
+    options[:type] = filters
+  end
+end.parse!
+
+params = {colors: options[:colors], setName: options[:setName], type: options[:type] }.map do |o, v|
+  "#{o}: #{v.inspect}" if v
+end.compact
+
+group_by = options[:group_by].map { |o| ":#{o}" }.join(', ')
+puts eval("MagicTheGatheringCards::Cards.fetch.soft_reduce(#{params.join(', ')}).group_by(#{group_by}).cards_set")
