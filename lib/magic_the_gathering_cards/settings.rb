@@ -7,6 +7,7 @@ module MagicTheGatheringCards
     EXPIRE_IN = 180
     CARDS_LOCAL_PATH = 'tmp/cards.txt'.freeze
     CARDS_LOCAL_DIR = 'tmp'.freeze
+    DEFAULT_THREADS = 4
 
     class << self
       def endpoint
@@ -23,6 +24,10 @@ module MagicTheGatheringCards
 
       def cards_local_dir
         CARDS_LOCAL_DIR
+      end
+
+      def threads_count
+        DEFAULT_THREADS
       end
     end
   end

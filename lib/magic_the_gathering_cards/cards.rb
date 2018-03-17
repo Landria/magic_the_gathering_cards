@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'fetcher'
 
 module MagicTheGatheringCards
@@ -29,15 +30,15 @@ module MagicTheGatheringCards
     end
 
     def reduce(condition = :strong, **attrs)
-      set = cards_set
+      set = []
+      threads = []
 
-      attrs.each_pair do |attr, value|
-        next unless attr_allowed?(attr)
+      cards_set.each_slice(Settings.threads_count) do |sub_set|
+        threads << Thread.new(sub_set) do |s_set|
+          set += check_card(attrs, s_set, condition)
+        end
 
-        set.keep_if do |card|
-          v = card.send(attr)
-          send("#{condition}_condition", v, value)
-        end 
+        threads.each(&:join)
       end
 
       set
@@ -80,6 +81,19 @@ module MagicTheGatheringCards
 
     def attr_allowed?(attr)
       attributes.include?(attr.to_sym)
+    end
+
+    def check_card(attrs, set, condition)
+      attrs.each_pair do |attr, value|
+        next unless attr_allowed?(attr)
+
+        set.keep_if do |card|
+          v = card.send(attr)
+          send("#{condition}_condition", v, value)
+        end
+      end
+
+      set
     end
   end
 end
