@@ -20,12 +20,14 @@ You can run cards fetcher from command line or include the lib in your own solut
 * Use **-g** or **--group** option to set attributes to group_by.
 * Use **-c** or **--color** option to set colors to fectch.
 * Use **-t** or **--type** option to set type attribute to fetch.
-* Use **-s** or **--setName** optin to set setName attribute to fetch.
+* Use **-s** or **--setName** option to set setName attribute to fetch.
+* Use **-p** or **--pages** option to set number of pages to fetch.
+* Use **-l** or **--kegalities** option to set legalities format to fetch.
 
 By default fetching is not strong. Ex.: if red and blue colors a passed, all cards with red OR blue colors attributes will be fetched. Type and setName checks using regexp and will fetch all partial inclusions.
 
-
 ```
-bin/magic_the_gathering_cards -g set,rarity -c red,blue -t Legendary
+bin/magic_the_gathering_cards -g set,rarity -c red,blue -t Legendary -p 10
+bin/magic_the_gathering_cards -p 3 -l Khans of Tahrir
 
 ```

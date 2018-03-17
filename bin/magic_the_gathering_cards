@@ -21,11 +21,21 @@ OptionParser.new do |parser|
   parser.on('-t', '--type FILTERS', String, 'Cards type filters') do |filters|
     options[:type] = filters
   end
+
+  parser.on('-p', '--pages FILTERS', Integer, 'Cards pages count filters') do |filters|
+    options[:pages] = filters
+  end
+
+  parser.on('-l', '--legalities FILTERS', String, 'Cards legalities filters') do |filters|
+    options[:legalities] = filters
+  end
 end.parse!
 
-params = {colors: options[:colors], setName: options[:setName], type: options[:type] }.map do |o, v|
+params = { colors: options[:colors], setName: options[:setName], type: options[:type], legalities: options[:legalities] }.map do |o, v|
   "#{o}: #{v.inspect}" if v
 end.compact
 
-group_by = options[:group_by].map { |o| ":#{o}" }.join(', ')
-puts eval("MagicTheGatheringCards::Cards.fetch.soft_reduce(#{params.join(', ')}).group_by(#{group_by}).cards_set")
+group_by = options[:group_by].map { |o| ":#{o}" }.join(', ') if options[:group_by]
+puts eval("MagicTheGatheringCards::Cards.fetch(#{options[:pages]}).soft_reduce(#{params.join(', ')}).group_by(#{group_by})")
+
+binding.pry

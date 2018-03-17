@@ -2,12 +2,12 @@
 
 module MagicTheGatheringCards
   module Settings
-
-    ENDPOINT = 'https://api.magicthegathering.io/v1/cards'.freeze
-    EXPIRE_IN = 180
-    CARDS_LOCAL_PATH = 'tmp/cards.txt'.freeze
-    CARDS_LOCAL_DIR = 'tmp'.freeze
+    ENDPOINT = 'https://api.magicthegathering.io/v1/cards'
+    EXPIRE_IN = 300
+    CARDS_LOCAL_PATH = ->(page) { "tmp/cards_#{page}.json" }
+    CARDS_LOCAL_DIR = 'tmp'
     DEFAULT_THREADS = 4
+    DEFAULT_PAGES_COUNT = 400
 
     class << self
       def endpoint
@@ -18,8 +18,8 @@ module MagicTheGatheringCards
         EXPIRE_IN
       end
 
-      def cards_local_path
-        CARDS_LOCAL_PATH
+      def cards_local_path(page)
+        CARDS_LOCAL_PATH.call(page)
       end
 
       def cards_local_dir
@@ -28,6 +28,10 @@ module MagicTheGatheringCards
 
       def threads_count
         DEFAULT_THREADS
+      end
+
+      def pages_count
+        DEFAULT_PAGES_COUNT
       end
     end
   end

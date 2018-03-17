@@ -22,6 +22,10 @@ RSpec.configure do |config|
   config.color = true
 
   config.after(:each) do
-   File.delete(MagicTheGatheringCards::Settings.cards_local_path) if File.exist?(MagicTheGatheringCards::Settings.cards_local_path)
+    FileUtils.rm_rf Dir.glob("#{MagicTheGatheringCards::Settings.cards_local_dir}/*")
+  end
+
+  config.before(:each) do
+    FileUtils.rm_rf Dir.glob("#{MagicTheGatheringCards::Settings.cards_local_dir}/*")
   end
 end

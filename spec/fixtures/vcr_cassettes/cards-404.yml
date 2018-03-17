@@ -1,7 +1,7 @@
 ---
 http_interactions:
 - request:
-    method: get
+    method: head
     uri: https://api.magicthegathering.io/v1/cards
     body:
       encoding: US-ASCII

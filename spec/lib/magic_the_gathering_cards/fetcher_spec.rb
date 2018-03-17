@@ -1,7 +1,7 @@
 require_relative '../../spec_helper'
 
 RSpec.describe MagicTheGatheringCards::Fetcher do
-  let(:file) { MagicTheGatheringCards::Settings.cards_local_path }
+  let(:file) { MagicTheGatheringCards::Settings.cards_local_path(1) }
 
   it { expect(File).not_to exist(file) }
   let(:cards) { { cards: [] }.to_json }
@@ -9,7 +9,7 @@ RSpec.describe MagicTheGatheringCards::Fetcher do
   it 'fetches remote cards if no local file exists' do
     VCR.use_cassette('cards') do
       expect(File).to_not exist(file)
-      cards = described_class.run
+      cards = described_class.run(1)
       expect(cards.count).to eq 100
       expect(cards.first.name).to eq 'Adorable Kitten'
       expect(File).to exist(file)
@@ -18,9 +18,9 @@ RSpec.describe MagicTheGatheringCards::Fetcher do
 
   it 'fetches local cards if file valid' do
     VCR.use_cassette('cards') do
-      described_class.run
+      described_class.run(2)
       expect(File).to exist(file)
-      expect_any_instance_of(described_class).to receive(:local_cards).and_return(cards)
+      expect_any_instance_of(described_class).to receive(:local_cards).and_return([])
       expect_any_instance_of(described_class).to_not receive(:remote_cards)
       described_class.run
     end
@@ -28,11 +28,11 @@ RSpec.describe MagicTheGatheringCards::Fetcher do
 
   it 'fetches remote cards if local file invalid' do
     VCR.use_cassette('cards') do
-      described_class.run
+      described_class.run(2)
       expect(File).to exist(file)
 
       Timecop.freeze(Time.now + MagicTheGatheringCards::Settings::EXPIRE_IN + 5) do
-        expect_any_instance_of(described_class).to receive(:remote_cards).and_return(cards)
+        expect_any_instance_of(described_class).to receive(:remote_cards).and_return([])
         described_class.run
       end
     end
@@ -40,13 +40,13 @@ RSpec.describe MagicTheGatheringCards::Fetcher do
 
   it 'returs local expired data if remote fetch failed' do
     VCR.use_cassette('cards') do
-      expect(described_class.run.count).to eq 100
+      expect(described_class.run(2).count).to eq 200
     end
 
     VCR.use_cassette('cards-404') do
       Timecop.freeze(Time.now + MagicTheGatheringCards::Settings::EXPIRE_IN + 5) do
-        cards = described_class.run
-        expect(cards.count).to eq 100
+        cards = described_class.run(2)
+        expect(cards.count).to eq 200
         expect(cards.first.name).to eq 'Adorable Kitten'
       end
     end
