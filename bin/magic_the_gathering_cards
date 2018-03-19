@@ -40,13 +40,9 @@ params = Hash[*options[:fields]].merge(
   setName: options[:setName],
   type: options[:type],
   legalities: options[:legalities]
-)
-
-params = params.map do |o, v|
+).map do |o, v|
   "#{o}: #{v.inspect}" if v
 end.compact
 
 group_by = options[:group_by].map { |o| ":#{o}" }.join(', ') if options[:group_by]
 puts eval("MagicTheGatheringCards::Cards.fetch(#{options[:pages]}).soft_reduce(#{params.join(', ')}).group_by(#{group_by})")
-
-binding.pry

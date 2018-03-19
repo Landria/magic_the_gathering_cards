@@ -11,6 +11,11 @@ git clone git@github.com:Landria/magic_the_gathering_cards.git
 cd magic_the_gathering_cards && bundle install
 ```
 
+Run tests
+```
+rspec spec
+```
+
 ## Usage
 
 You can run cards fetcher from command line or include the lib in your own solutoin.
@@ -30,6 +35,5 @@ By default fetching is not strong. Ex.: if red and blue colors a passed, all car
 ```
 bin/magic_the_gathering_cards -g set,rarity -c red,blue -t Legendary -p 10
 bin/magic_the_gathering_cards -p 3 -l Khans of Tahrir
- bin/magic_the_gathering_cards -p 3 -f legalities,Khans
-
+bin/magic_the_gathering_cards -p 3 -f legalities,Khans
 ```

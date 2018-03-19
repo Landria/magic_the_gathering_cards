@@ -2,10 +2,10 @@
 
 module MagicTheGatheringCards
   module Settings
-    ENDPOINT = 'https://api.magicthegathering.io/v1/cards'
+    ENDPOINT = 'https://api.magicthegathering.io/v1/cards'.freeze
     EXPIRE_IN = 300
     CARDS_LOCAL_PATH = ->(page) { "tmp/cards_#{page}.json" }
-    CARDS_LOCAL_DIR = 'tmp'
+    CARDS_LOCAL_DIR = 'tmp'.freeze
     DEFAULT_THREADS = 4
     DEFAULT_PAGES_COUNT = 400
 
